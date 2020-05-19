@@ -39,6 +39,14 @@
             <groupId>org.scalactic</groupId>
             <artifactId>scalactic_${scala.version.major}</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-mock-record-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-mock</artifactId>
+        </dependency>
         <!-- testing related dependencies END -->
     </dependencies>
 

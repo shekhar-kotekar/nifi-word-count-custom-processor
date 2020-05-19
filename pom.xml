@@ -53,6 +53,12 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-mock-record-utils</artifactId>
+                <version>${nifi.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.scalatest</groupId>
                 <artifactId>scalatest_${scala.version.major}</artifactId>
                 <version>${org.scalatest.version}</version>
