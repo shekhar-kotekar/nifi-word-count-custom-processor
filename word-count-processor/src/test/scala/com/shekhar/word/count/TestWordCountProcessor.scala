@@ -12,7 +12,7 @@ class TestWordCountProcessor extends WordSpec with Matchers with BeforeAndAfterE
   private val stopWords: Seq[String] = Seq("of", "this", "the", "me", "myself", "his", "and", "a")
 
   private val inputData: String = "Before you judge a man, walk a mile in his shoes." +
-    " After that who cares?... He’s a mile away and you’ve got his shoes!"
+    " After that who cares?... Heprevious post ’s a mile away and you’ve got his shoes!"
 
   "Word count processor" should {
     "count occurance of stop words as well when 'skip stop words' property is false" in {

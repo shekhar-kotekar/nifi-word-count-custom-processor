@@ -39,8 +39,10 @@ class WordCountProcessor extends AbstractProcessor with LazyLogging {
    * while processing a flow file.
    */
   val FAILURE: Relationship = new Relationship.Builder().name(WordCountProcessor.failureRelationName).build
+
   // for simplicity, we will stick to only these stop words.
   private val stopWords: Seq[String] = Seq("of", "this", "the", "me", "myself", "his", "and", "a")
+
   /**
    * Processor will use value of this property descriptor to determine if
    * we need to consider stop words like of, the, will be counted too or not.
@@ -104,10 +106,14 @@ class WordCountProcessor extends AbstractProcessor with LazyLogging {
       .filterNot(_.trim.length == 0)
       .filterNot(word => skipStopWords && stopWords.contains(word))
 
+    // We will do word count here
     val wordCounts: Map[String, Int] = words
       .groupBy((word: String) => word)
       .mapValues(_.length)
 
+    // Generate flow file for each word.
+    // for each flow file add word attribute and
+    // also other attribute called count
     val outputFlowFiles: Seq[FlowFile] = wordCounts
       .map(wordCount => {
         val outputFlowFile: FlowFile = session.clone(inputFlowFile)
@@ -115,11 +121,19 @@ class WordCountProcessor extends AbstractProcessor with LazyLogging {
         session.putAttribute(outputFlowFile, "count", wordCount._2.toString)
         outputFlowFile
       }).toSeq
-
+    // transfer all the generated flow files to success relationship.
     session.transfer(outputFlowFiles.asJava, SUCCESS)
+
+    // Now we will remove original input file from which we read all the words
     session.remove(inputFlowFile)
   }
 
+  /**
+   * This method reads all the contents of given flow file and converts contents to String
+   * @param flowFile flow file from which content will be read
+   * @param session We need process session object to read contents of flow file
+   * @return contents of flow file in String format
+   */
   private def readFlowFileContents(flowFile: FlowFile, session: ProcessSession): String = {
     val flowFileContentsBuffer = new Array[Byte](flowFile.getSize.toInt)
     session.read(flowFile, new InputStreamCallback {
@@ -132,7 +146,15 @@ class WordCountProcessor extends AbstractProcessor with LazyLogging {
 }
 
 object WordCountProcessor {
+  /**
+   * We can get reference to property descriptor using this name.
+   * Once we have reference to property descriptor, we can get its current value
+   */
   val skipStopWordsPropertyName: String = "skip-stop-words"
+
+  /**
+   * We can get reference to relationship using this name
+   */
   val successRelationName: String = "success"
   val failureRelationName: String = "failure"
 }
