@@ -4,13 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <artifactId>nifi-nar-bundles</artifactId>
+        <groupId>org.apache.nifi</groupId>
+        <version>1.11.4</version>
+    </parent>
+
     <groupId>com.shekhar.nifi</groupId>
     <artifactId>nifi-word-count-custom-processor</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
-        <module>nar-bundle</module>
         <module>word-count-processor</module>
+        <module>nar-bundle</module>
     </modules>
 
     <properties>
@@ -21,6 +28,8 @@
         <org.scalactic.version>3.1.0-RC1</org.scalactic.version>
         <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
         <com.typesafe.scala.logging.version>3.9.2</com.typesafe.scala.logging.version>
+        <nifi.nar.plugin.version>1.3.1</nifi.nar.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -93,13 +102,13 @@
             <plugin>
                 <groupId>org.apache.nifi</groupId>
                 <artifactId>nifi-nar-maven-plugin</artifactId>
-                <version>1.3.1</version>
+                <version>${nifi.nar.plugin.version}</version>
                 <extensions>true</extensions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>${maven.surefire.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
